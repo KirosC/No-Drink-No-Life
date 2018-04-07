@@ -44,6 +44,7 @@ public class SharedPreferencesUtils {
         SharedPreferences.Editor editor = sPreferences.edit();
         editor.putInt(context.getString(R.string.today_drinks), 0);
         editor.putInt(context.getString(R.string.today_day), dayOfWeek);
+        editor.putLong(context.getString(R.string.last_update_time), 0);
         editor.putFloat(context.getString(R.string.character_health), (float) 100);
 
         for (int i = MONDAY; i <= SUNDAY; i++) {

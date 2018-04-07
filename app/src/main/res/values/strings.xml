@@ -16,4 +16,5 @@
     <string name="today_day">Today Day</string>
     <string name="character_health">Character Health</string>
     <string name="day_prefix">Day_</string>
+    <string name="last_update_time">Last Update Time</string>
 </resources>
