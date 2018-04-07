@@ -12,4 +12,8 @@
     <string name="main_notification_channel_name">Main</string>
     <string name="charging_reminder_notification_title">Where\'s that water?</string>
     <string name="charging_reminder_notification_body">Drink up!</string>
+    <string name="today_drinks">Drank Water Today</string>
+    <string name="today_day">Today Day</string>
+    <string name="character_health">Character Health</string>
+    <string name="day_prefix">Day_</string>
 </resources>
