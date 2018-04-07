@@ -17,4 +17,5 @@
     <string name="character_health">Character Health</string>
     <string name="day_prefix">Day_</string>
     <string name="last_update_time">Last Update Time</string>
+    <string name="health_bar">Health Bar</string>
 </resources>

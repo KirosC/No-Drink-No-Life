@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="hkcc.ccn2279.a16031806a.nodrinknolife.MainActivity">
+    tools:context="ccn2279.a16031806a.nodrinknolife.MainActivity">
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingActionButton"
@@ -14,6 +14,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:clickable="true"
+        android:focusable="true"
         android:onClick="testNotification"
         android:scaleType="center"
         app:fabSize="mini"
@@ -26,8 +27,34 @@
         android:id="@+id/characterImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:src="@drawable/gif_human_swim"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/gif_human_swim"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/healthBar"
+        android:layout_width="25dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/health_bar"
+        android:scaleType="fitXY"
+        android:src="@drawable/health_bar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/characterImage"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/healthValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/healthBar"
+        app:layout_constraintStart_toStartOf="@+id/healthBar"
+        app:layout_constraintTop_toBottomOf="@+id/healthBar"
+        tools:text="100%" />
 
 </android.support.constraint.ConstraintLayout>
