@@ -77,7 +77,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.setting) {
-            Intent intent = new Intent(this, ccn2279.a16031806a.nodrinknolife.SettingsActivity.class);
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.stat) {
+            Intent intent = new Intent(this, StatActivity.class);
             startActivity(intent);
         }
         return true;
