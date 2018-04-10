@@ -18,6 +18,9 @@ import ccn2279.a16031806a.nodrinknolife.R;
 import ccn2279.a16031806a.nodrinknolife.sync.ReminderTasks;
 import ccn2279.a16031806a.nodrinknolife.sync.WaterReminderIntentService;
 
+/**
+ * Updated by Kiros Choi on 2018/04/11.
+ */
 public class NotificationUtils {
     private static final int REMINDER_NOTIFICATION_ID = 1001;
 

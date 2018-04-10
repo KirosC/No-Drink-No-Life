@@ -2,8 +2,8 @@ package ccn2279.a16031806a.nodrinknolife;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,12 +14,14 @@ import android.widget.TextView;
 
 import com.race604.drawable.wave.WaveDrawable;
 
-import ccn2279.a16031806a.nodrinknolife.utilities.NotificationUtils;
-import ccn2279.a16031806a.nodrinknolife.utilities.SharedPreferencesUtils;
+import ccn2279.a16031806a.nodrinknolife.utilities.*;
 
+/**
+ * Updated by Kiros Choi on 2018/04/11.
+ */
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    public static final String TAG = "NoDrinkNoLifeDebug";
+    public static final String TAG = "Debug_NoDrinkNoLife";
 
     private ImageView healthBar_iv;
     private TextView healthValue_tv;
@@ -45,10 +47,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         //      End of initialization       //
 
         //ReminderUtilities.scheduleChargingReminder(this);
-        boolean value1 = SharedPreferencesUtils.getInstance(this);
-        int value2 = SharedPreferencesUtils.initSharedPreferences(this);
-        Log.d(TAG, String.valueOf(value1));
-        Log.d(TAG, String.valueOf(value2));
+        int value = SharedPreferencesUtils.initSharedPreferences(this);
+
+        Log.d(TAG, String.valueOf(value));
 
         mSharedPreferences = getSharedPreferences(SharedPreferencesUtils.PREFERENCE_NAME, MODE_PRIVATE);
         mSharedPreferences.registerOnSharedPreferenceChangeListener(this);

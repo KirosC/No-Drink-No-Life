@@ -5,6 +5,9 @@ import android.app.job.JobService;
 import android.content.Context;
 import android.os.AsyncTask;
 
+/**
+ * Updated by Kiros Choi on 2018/04/11.
+ */
 public class WaterReminderJobService extends JobService {
     private AsyncTask mBackgroundTask;
 

@@ -4,6 +4,9 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 
+/**
+ * Updated by Kiros Choi on 2018/04/11.
+ */
 public class WaterReminderIntentService extends IntentService {
     public WaterReminderIntentService() {
         super("WaterReminderIntentService");

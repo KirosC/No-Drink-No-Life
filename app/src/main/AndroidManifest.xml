@@ -42,7 +42,9 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".StatActivity"></activity>
+        <activity
+            android:name=".StatActivity"
+            android:label="@string/title_activity_statistics"></activity>
     </application>
 
 </manifest>

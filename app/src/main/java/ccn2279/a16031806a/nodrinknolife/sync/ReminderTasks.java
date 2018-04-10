@@ -2,7 +2,9 @@ package ccn2279.a16031806a.nodrinknolife.sync;
 
 import android.content.Context;
 
-
+/**
+ * Updated by Kiros Choi on 2018/04/11.
+ */
 public class ReminderTasks {
     public static final String ACTION_INCREMENT_WATER_COUNT = "increment-water-count";
     public static final String ACTION_DISMISS_NOTIFICATION = "dismiss-notification";

@@ -9,6 +9,9 @@ import android.support.annotation.NonNull;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Updated by Kiros Choi on 2018/04/11.
+ */
 public class ReminderUtilities {
     private static final int REMINDER_INTERVAL_MINUTES = 15;
     private static final long REMINDER_INTERVAL_SECONDS = (int) (TimeUnit.MINUTES.toMillis(REMINDER_INTERVAL_MINUTES));
