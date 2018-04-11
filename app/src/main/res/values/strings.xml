@@ -13,6 +13,8 @@
     <string name="main_notification_channel_name">Main</string>
     <string name="charging_reminder_notification_title">Where\'s that water?</string>
     <string name="charging_reminder_notification_body">Drink up!</string>
+    <string name="ignore_reminder">No, thanks.</string>
+    <string name="accept_reminder">I did it!</string>
 
     <!-- Strings for SharedPreferences keys -->
     <string name="today_drinks">Drank Water Today</string>
@@ -24,6 +26,10 @@
     <string name="health_bar">Health Bar</string>
     <string name="first_week">First Week</string>
     <string name="is_using_weekA">Is using Week A</string>
+
+    <!-- Strings for the BarChart -->
     <string name="current_week">Current Week</string>
     <string name="last_week">Last Week</string>
+
+
 </resources>

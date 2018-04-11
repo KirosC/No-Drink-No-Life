@@ -1,5 +1,8 @@
 package ccn2279.a16031806a.nodrinknolife;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,7 +17,12 @@ import android.widget.TextView;
 
 import com.race604.drawable.wave.WaveDrawable;
 
-import ccn2279.a16031806a.nodrinknolife.utilities.*;
+import java.util.Calendar;
+import java.util.TimeZone;
+
+import ccn2279.a16031806a.nodrinknolife.sync.AlarmReceiver;
+import ccn2279.a16031806a.nodrinknolife.utilities.NotificationUtils;
+import ccn2279.a16031806a.nodrinknolife.utilities.SharedPreferencesUtils;
 
 /**
  * Updated by Kiros Choi on 2018/04/11.
@@ -53,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
         mSharedPreferences = getSharedPreferences(SharedPreferencesUtils.PREFERENCE_NAME, MODE_PRIVATE);
         mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
+        registerAlarm();
     }
 
     @Override
@@ -87,23 +96,50 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         return true;
     }
 
-    public void testNotification(View view) {
-        NotificationUtils.remindUserToDrink(this);
-    }
-
-    public void updateHealthUI(float health) {
-        healthValue_tv.setText(String.format("%.1f%%", health));
-        // Min: 2570; Max: 9990
-        health = 2570 + (7420 * health / 100);
-        mWaveDrawable.setLevel((int) health);
-        mWaveDrawable.invalidateSelf();
-    }
-
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         Log.d(TAG, key);
         if (key.equals(getString(R.string.character_health))) {
             updateHealthUI(sharedPreferences.getFloat(key, (float) 0));
         }
+    }
+
+    public void testNotification(View view) {
+        NotificationUtils.remindUserToDrink(this);
+    }
+
+    /**
+     * Update the health UI with new health number.
+     *
+     * @param health The new health of the character.
+     */
+    public void updateHealthUI(float health) {
+        healthValue_tv.setText(String.format("%.1f%%", health));
+        // Min: 2570; Max: 9990
+        health = 2570 + (7420 * health / 100);
+        mWaveDrawable.setLevel((int) health);
+        // Reload the Drawable
+        mWaveDrawable.invalidateSelf();
+    }
+
+    /**
+     * Set an alarm on every midnight
+     */
+    public void registerAlarm() {
+        // Set a pending intent to be executed
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        intent.setAction(AlarmReceiver.ACTION_SAVE_DAILY_DRINKS);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
+                0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // Set the specific time
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeZone(TimeZone.getDefault());
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+
+        // Repeat the alarm everyday
+        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        alarm.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
     }
 }

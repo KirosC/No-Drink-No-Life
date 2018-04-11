@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 
 /**
  * Updated by Kiros Choi on 2018/04/11.
+ *
+ * This class uses IntentService so it will not block the main thread.
  */
 public class WaterReminderIntentService extends IntentService {
     public WaterReminderIntentService() {

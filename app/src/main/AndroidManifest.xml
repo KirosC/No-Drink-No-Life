@@ -45,6 +45,15 @@
         <activity
             android:name=".StatActivity"
             android:label="@string/title_activity_statistics"></activity>
+
+        <receiver
+            android:name=".sync.AlarmReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name=".sync.AlarmReceiver.ACTION_SAVE_DAILY_DRINKS" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

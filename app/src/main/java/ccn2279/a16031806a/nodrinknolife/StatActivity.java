@@ -31,6 +31,7 @@ import ccn2279.a16031806a.nodrinknolife.utilities.SharedPreferencesUtils;
  */
 public class StatActivity extends AppCompatActivity {
     public static final String TAG = "Debug_NoDrinkNoLife";
+
     private BarChart barChartA, barChartB;
     private SharedPreferences mSharedPreferences;
 
@@ -53,7 +54,11 @@ public class StatActivity extends AppCompatActivity {
         updateChart();
     }
 
+    /**
+     * Update the chart to the newest data
+     */
     private void updateChart() {
+        // Get the Y-Axis Label String
         final String[] day = getResources().getStringArray(R.array.day_array);
 
         // Format Y-Axis Label
@@ -65,7 +70,7 @@ public class StatActivity extends AppCompatActivity {
             }
         };
 
-        // Format bar values
+        // Format bar values to whole integer
         IValueFormatter iValueFormatter = new IValueFormatter() {
             @Override
             public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
@@ -74,6 +79,7 @@ public class StatActivity extends AppCompatActivity {
             }
         };
 
+        // ArrayList of bar for each set of data
         List<BarEntry> entriesA = new ArrayList<>();
         List<BarEntry> entriesB = new ArrayList<>();
 
@@ -81,6 +87,7 @@ public class StatActivity extends AppCompatActivity {
         boolean isUsingWeekA = mSharedPreferences.getBoolean(getString(R.string.is_using_weekA), true);
         boolean drawWeekAFirst;
 
+        // Determine which week in SharePreferences is drawn first
         if (!(!firstWeek && isUsingWeekA)) {
             Log.d(TAG, "Draw week A first");
             drawWeekAFirst = true;
@@ -89,6 +96,7 @@ public class StatActivity extends AppCompatActivity {
             drawWeekAFirst = false;
         }
 
+        // Load the data from SharedPreference two times
         for (int i = 0; i < 2; i++) {
             // Draw only 1 bar chart if it is the first week
             if (firstWeek && i == 1) {
@@ -112,10 +120,9 @@ public class StatActivity extends AppCompatActivity {
                 }
             }
 
-            // Add the data into entry
+            // Add the data into corresponding Entry
             for (int j = SharedPreferencesUtils.MONDAY; j <= SharedPreferencesUtils.SUNDAY; j++) {
                 float value = (float) mSharedPreferences.getInt(prefix + j, 10);
-                Log.d(TAG, prefix + j);
 
                 if (i == 0) {
                     entriesA.add(new BarEntry(j, value));
@@ -125,6 +132,7 @@ public class StatActivity extends AppCompatActivity {
             }
         }
 
+        // Add the Entry to the corresponding BarDataSet
         BarDataSet dataSetA, dataSetB = null;
         if (firstWeek) {
             dataSetA = new BarDataSet(entriesA, getString(R.string.current_week));
@@ -138,10 +146,10 @@ public class StatActivity extends AppCompatActivity {
         dataSetA.setValueTextSize((float) 16);
         dataSetA.setValueFormatter(iValueFormatter);
 
+        // Hook the BarDataSet to the BarData which represents all data for the BarChart.
         BarData barDataA = new BarData(dataSetA);
 
         barChartA.setData(barDataA);
-        //barChartA.getLegend().setEnabled(false);
         barChartA.setDescription(null);
 
         // Setting for X-Axis

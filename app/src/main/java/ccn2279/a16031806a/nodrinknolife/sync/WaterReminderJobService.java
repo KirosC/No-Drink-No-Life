@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 
 /**
  * Updated by Kiros Choi on 2018/04/11.
+ *
+ * This class defines what the JobService does.
  */
 public class WaterReminderJobService extends JobService {
     private AsyncTask mBackgroundTask;
@@ -17,6 +19,7 @@ public class WaterReminderJobService extends JobService {
             @Override
             protected Object doInBackground(Object[] objects) {
                 Context context = WaterReminderJobService.this;
+                // Issue a Notification
                 ReminderTasks.executeTask(context, ReminderTasks.ACTION_CHARGING_REMINDER);
                 return null;
             }
