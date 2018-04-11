@@ -59,7 +59,7 @@ public class SharedPreferencesUtils {
         }
         //              End of initialization           //
 
-        // Write the SharedPreferences to device storage
+        // Write the SharedPreferences to the device storage
         boolean flag = editor.commit();
         return flag ? 1 : -1;
     }
@@ -70,25 +70,49 @@ public class SharedPreferencesUtils {
      * @param context The context of the activity.
      * @param key     The String value of the editing key.
      * @param value   The new value of the editing key.
-     * @return True if the change is successful, otherwise false.
+     *
+     * @exception IllegalArgumentException if key is not found.
+     * @exception Exception if fail to save.
      */
-    public static boolean setValue(Context context, String key, int value) {
+    public static void setValue(Context context, String key, int value) throws Exception {
+        boolean success;
         if (!sPreferences.contains(key)) {
-            return false;
+            throw new IllegalArgumentException("Input key is not found");
         }
         SharedPreferences.Editor editor = sPreferences.edit();
         editor.putInt(key, value);
 
-        return editor.commit();
+        success = editor.commit();
+        if (!success) {
+            throw new Exception("Fail to save");
+        }
     }
 
-    public static boolean setValue(Context context, String key, float value) {
+    public static void setValue(Context context, String key, float value) throws Exception {
+        boolean success;
         if (!sPreferences.contains(key)) {
-            return false;
+            throw new IllegalArgumentException("Input key is not found");
         }
         SharedPreferences.Editor editor = sPreferences.edit();
         editor.putFloat(key, value);
 
-        return editor.commit();
+        success = editor.commit();
+        if (!success) {
+            throw new Exception("Fail to save");
+        }
+    }
+
+    public static void setValue(Context context, String key, boolean value) throws Exception {
+        boolean success;
+        if (!sPreferences.contains(key)) {
+            throw new IllegalArgumentException("Input key is not found");
+        }
+        SharedPreferences.Editor editor = sPreferences.edit();
+        editor.putBoolean(key, value);
+
+        success = editor.commit();
+        if (!success) {
+            throw new Exception("Fail to save");
+        }
     }
 }
