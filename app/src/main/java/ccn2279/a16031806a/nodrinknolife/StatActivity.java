@@ -86,6 +86,8 @@ public class StatActivity extends AppCompatActivity {
         boolean firstWeek = mSharedPreferences.getBoolean(getString(R.string.first_week), true);
         boolean isUsingWeekA = mSharedPreferences.getBoolean(getString(R.string.is_using_weekA), true);
         boolean drawWeekAFirst;
+        int todayDay = mSharedPreferences.getInt(getString(R.string.today_day), -1);
+        int todayDrinks = mSharedPreferences.getInt(getString(R.string.today_drinks), -1);
 
         // Determine which week in SharePreferences is drawn first
         if (!(!firstWeek && isUsingWeekA)) {
@@ -125,9 +127,17 @@ public class StatActivity extends AppCompatActivity {
                 float value = (float) mSharedPreferences.getInt(prefix + j, 10);
 
                 if (i == 0) {
-                    entriesA.add(new BarEntry(j, value));
+                    if (j == todayDay && firstWeek) {
+                        entriesA.add(new BarEntry(j, todayDrinks));
+                    } else {
+                        entriesA.add(new BarEntry(j, value));
+                    }
                 } else {
-                    entriesB.add(new BarEntry(j, value));
+                    if (j == todayDay && !firstWeek) {
+                        entriesB.add(new BarEntry(j, todayDrinks));
+                    } else {
+                        entriesB.add(new BarEntry(j, value));
+                    }
                 }
             }
         }

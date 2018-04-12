@@ -30,4 +30,5 @@ dependencies {
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.12'
     implementation 'com.race604.waveloading:library:1.1.1'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+    implementation 'org.jetbrains:annotations-java5:15.0'
 }

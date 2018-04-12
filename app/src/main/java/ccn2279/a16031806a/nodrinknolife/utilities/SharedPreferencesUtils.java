@@ -115,4 +115,18 @@ public class SharedPreferencesUtils {
             throw new Exception("Fail to save");
         }
     }
+
+    public static void setValue(Context context, String key, long value) throws Exception {
+        boolean success;
+        if (!sPreferences.contains(key)) {
+            throw new IllegalArgumentException("Input key is not found");
+        }
+        SharedPreferences.Editor editor = sPreferences.edit();
+        editor.putLong(key, value);
+
+        success = editor.commit();
+        if (!success) {
+            throw new Exception("Fail to save");
+        }
+    }
 }

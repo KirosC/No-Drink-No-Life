@@ -2,6 +2,8 @@ package ccn2279.a16031806a.nodrinknolife.sync;
 
 import android.content.Context;
 
+import ccn2279.a16031806a.nodrinknolife.utilities.CalculateionUtils;
+
 /**
  * Updated by Kiros Choi on 2018/04/11.
  */
@@ -25,7 +27,11 @@ public class ReminderTasks {
     }
 
     private static void incrementWaterCount(Context context) {
-        //  TODO(1) Increase the water count
+        try {
+            CalculateionUtils.updateHealth(context);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         ccn2279.a16031806a.nodrinknolife.utilities.NotificationUtils.clearAllNotifications(context);
     }
 }

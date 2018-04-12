@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -21,7 +22,8 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 import ccn2279.a16031806a.nodrinknolife.sync.AlarmReceiver;
-import ccn2279.a16031806a.nodrinknolife.utilities.NotificationUtils;
+import ccn2279.a16031806a.nodrinknolife.sync.ReminderUtilities;
+import ccn2279.a16031806a.nodrinknolife.utilities.CalculateionUtils;
 import ccn2279.a16031806a.nodrinknolife.utilities.SharedPreferencesUtils;
 
 /**
@@ -36,6 +38,23 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private WaveDrawable mWaveDrawable;
 
     private SharedPreferences mSharedPreferences;
+
+    // Create the Handler object (on the main thread by default)
+    Handler handler = new Handler();
+    // Define the code block to be executed
+    private Runnable runnableCode = new Runnable() {
+        @Override
+        public void run() {
+            // Update character health on the main thread
+            try {
+                CalculateionUtils.updateHealth(MainActivity.this);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            // Repeat this the same runnable code block again another 90 seconds
+            handler.postDelayed(runnableCode, 90000);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         updateHealthUI((float) 100);
         //      End of initialization       //
 
-        //ReminderUtilities.scheduleChargingReminder(this);
+        ReminderUtilities.scheduleChargingReminder(this);
         int value = SharedPreferencesUtils.initSharedPreferences(this);
 
         Log.d(TAG, String.valueOf(value));
@@ -62,18 +81,31 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         mSharedPreferences = getSharedPreferences(SharedPreferencesUtils.PREFERENCE_NAME, MODE_PRIVATE);
         mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
         registerAlarm();
+        handler.post(runnableCode);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
+        try {
+            CalculateionUtils.updateHealth(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        handler.post(runnableCode);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         mSharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacksAndMessages(null);
     }
 
     @Override
@@ -105,7 +137,11 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     }
 
     public void testNotification(View view) {
-        NotificationUtils.remindUserToDrink(this);
+        try {
+            CalculateionUtils.increaseDrankWater(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
