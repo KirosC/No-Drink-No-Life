@@ -70,16 +70,16 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         mWaveDrawable.setIndeterminate(false);
         mWaveDrawable.setWaveAmplitude(5);
         mWaveDrawable.setWaveSpeed(3);
-        updateHealthUI((float) 100);
         //      End of initialization       //
 
         ReminderUtilities.scheduleChargingReminder(this);
         int value = SharedPreferencesUtils.initSharedPreferences(this);
-
         Log.d(TAG, String.valueOf(value));
 
         mSharedPreferences = getSharedPreferences(SharedPreferencesUtils.PREFERENCE_NAME, MODE_PRIVATE);
         mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
+        updateHealthUI(mSharedPreferences.getFloat(getString(R.string.character_health), (float) 0));
+
         registerAlarm();
         handler.post(runnableCode);
     }

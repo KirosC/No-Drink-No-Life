@@ -3,6 +3,7 @@
     <string name="setting">Setting</string>
     <string name="stat">Stat</string>
     <string name="title_character">Character Selection</string>
+    <string name="health_bar">Health Bar</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -23,7 +24,6 @@
     <string name="weekA_prefix">WeekA_</string>
     <string name="weekB_prefix">WeekB_</string>
     <string name="last_update_time">Last Update Time</string>
-    <string name="health_bar">Health Bar</string>
     <string name="first_week">First Week</string>
     <string name="is_using_weekA">Is using Week A</string>
 

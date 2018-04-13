@@ -37,7 +37,7 @@ public class SharedPreferencesUtils {
         sPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
 
         // Check if SharedPreferences is initialized
-        if (sPreferences.contains(context.getString(R.string.today_drinks))) {
+        if (sPreferences.contains(context.getString(R.string.first_week))) {
             return 0;
         }
 
