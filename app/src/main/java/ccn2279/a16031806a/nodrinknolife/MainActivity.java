@@ -130,7 +130,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        Log.d(TAG, key);
         if (key.equals(getString(R.string.character_health))) {
             updateHealthUI(sharedPreferences.getFloat(key, (float) 0));
         }

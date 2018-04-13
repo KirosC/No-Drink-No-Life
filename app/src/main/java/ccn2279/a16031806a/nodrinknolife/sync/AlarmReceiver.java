@@ -27,7 +27,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             Log.d("Debug_", "ACTION_SAVE_DAILY_DRINKS");
             Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
             v.vibrate(500);
-            Toast.makeText(context, "Test", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "ACTION_SAVE_DAILY_DRINKS", Toast.LENGTH_SHORT).show();
         } else if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
             try {
                 CalculateionUtils.saveDailyDrinks(context);
@@ -35,6 +35,5 @@ public class AlarmReceiver extends BroadcastReceiver {
                 e.printStackTrace();
             }
         }
-
     }
 }

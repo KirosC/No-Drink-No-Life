@@ -16,11 +16,11 @@ import static ccn2279.a16031806a.nodrinknolife.utilities.SharedPreferencesUtils.
  */
 
 public class CalculateionUtils {
-    private static final float DECREASE_PER_SEC = (float) 0.00115740741;
+    private static final float DECREASE_PER_SEC = (float) 0.00231481482;
     private static final float INCREASE_PER_DRINK = (float) 12.5;
     private static float health;
 
-    public static final String TAG = "Debug_NoDrinkNoLife8888";
+    public static final String TAG = "Debug_NoDrinkNoLife";
 
 
     private static SharedPreferences sPreferences;
@@ -31,12 +31,10 @@ public class CalculateionUtils {
         long lastUpdate = sPreferences.getLong(context.getString(R.string.last_update_time), (long) 0);
         Calendar cal = Calendar.getInstance(TimeZone.getDefault());
         health -= (cal.getTimeInMillis() - lastUpdate) / 1000 * DECREASE_PER_SEC;
-        Log.d(TAG, String.valueOf(lastUpdate));
         if (health < 0) {
             health = 0;
         }
         lastUpdate = cal.getTimeInMillis();
-        Log.d(TAG, String.valueOf(lastUpdate));
         SharedPreferencesUtils.setValue(context, context.getString(R.string.character_health), health);
         SharedPreferencesUtils.setValue(context, context.getString(R.string.last_update_time), lastUpdate);
     }
@@ -72,6 +70,8 @@ public class CalculateionUtils {
         int todayDay = cal.get(Calendar.DAY_OF_WEEK);
         todayDay = (todayDay == 1) ? SUNDAY : --todayDay;
 
+        Log.d(TAG, "Today day: " + todayDay + " P Day: " + preferencesDay);
+
         // Return if it is the same day
         if (todayDay == preferencesDay) {
             Log.d(TAG, "Cannot save on same day");
@@ -87,7 +87,7 @@ public class CalculateionUtils {
             prefix = context.getString(R.string.weekB_prefix);
         }
 
-        SharedPreferencesUtils.setValue(context, prefix + context.getString(R.string.today_day), todayDrinks);
+        SharedPreferencesUtils.setValue(context, prefix + preferencesDay, todayDrinks);
 
         // Set new day and number of drink
         SharedPreferencesUtils.setValue(context, context.getString(R.string.today_day), todayDay);
