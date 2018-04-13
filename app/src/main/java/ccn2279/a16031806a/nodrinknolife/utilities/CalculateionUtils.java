@@ -87,6 +87,7 @@ public class CalculateionUtils {
             prefix = context.getString(R.string.weekB_prefix);
         }
 
+        Log.d(TAG, prefix + preferencesDay);
         SharedPreferencesUtils.setValue(context, prefix + preferencesDay, todayDrinks);
 
         // Set new day and number of drink

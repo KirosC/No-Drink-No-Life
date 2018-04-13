@@ -77,7 +77,7 @@ public class SharedPreferencesUtils {
     public static void setValue(Context context, String key, int value) throws Exception {
         boolean success;
         if (!sPreferences.contains(key)) {
-            throw new IllegalArgumentException("Input key is not found");
+            throw new IllegalArgumentException("Input key \"" + key + "\" is not found");
         }
         SharedPreferences.Editor editor = sPreferences.edit();
         editor.putInt(key, value);
