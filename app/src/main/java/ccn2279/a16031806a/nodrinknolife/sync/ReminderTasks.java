@@ -28,7 +28,7 @@ public class ReminderTasks {
 
     private static void incrementWaterCount(Context context) {
         try {
-            CalculateionUtils.updateHealth(context);
+            CalculateionUtils.increaseDrankWater(context);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -2,7 +2,9 @@ package ccn2279.a16031806a.nodrinknolife.utilities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Vibrator;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -17,7 +19,7 @@ import static ccn2279.a16031806a.nodrinknolife.utilities.SharedPreferencesUtils.
 
 public class CalculateionUtils {
     private static final float DECREASE_PER_SEC = (float) 0.00231481482;
-    private static final float INCREASE_PER_DRINK = (float) 12.5;
+    private static final float INCREASE_PER_DRINK = (float) 25;
     private static float health;
 
     public static final String TAG = "Debug_NoDrinkNoLife";
@@ -49,6 +51,11 @@ public class CalculateionUtils {
             health = 150;
         }
         todayDrink++;
+
+        Toast.makeText(context, context.getString(R.string.water_chug_toast), Toast.LENGTH_SHORT).show();
+        Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        v.vibrate(500);
+
         SharedPreferencesUtils.setValue(context, context.getString(R.string.character_health), health);
         SharedPreferencesUtils.setValue(context, context.getString(R.string.today_drinks), todayDrink);
     }

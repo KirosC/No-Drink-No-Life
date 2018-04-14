@@ -36,8 +36,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private ImageView healthBar_iv;
     private TextView healthValue_tv;
     private WaveDrawable mWaveDrawable;
-
     private SharedPreferences mSharedPreferences;
+
+    // For the loop counter
+    private int i;
 
     // Create the Handler object (on the main thread by default)
     Handler handler = new Handler();
@@ -151,10 +153,58 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     public void updateHealthUI(float health) {
         healthValue_tv.setText(String.format("%.1f%%", health));
         // Min: 2570; Max: 9990
-        health = 2570 + (7420 * health / 100);
-        mWaveDrawable.setLevel((int) health);
-        // Reload the Drawable
-        mWaveDrawable.invalidateSelf();
+        final int newLevel = (int) (2570 + (7420 * health / 100));
+        final int originalLevel = mWaveDrawable.getLevel();
+        int difference = originalLevel - newLevel;
+        if (difference < 0) {
+            difference = -difference;
+        }
+        Log.d(TAG, "Level: " + originalLevel + " N Lv: " + newLevel + " Diff: " + difference);
+
+        // If the difference is too large, update the UI bar gradually
+        if (difference < 350 || originalLevel == (float) 0) {
+            mWaveDrawable.setLevel(newLevel);
+            // Reload the Drawable
+            mWaveDrawable.invalidateSelf();
+        } else {
+            (new Thread() {
+                @Override
+                public void run() {
+                    Log.d(TAG, "Level: " + originalLevel + " N Lv: " + newLevel);
+                    if (newLevel > originalLevel) {
+                        for (i = originalLevel; i < newLevel; i++) {
+                            try {
+                                sleep(1);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mWaveDrawable.setLevel(i);
+                                        mWaveDrawable.invalidateSelf();
+                                    }
+                                });
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    } else {
+                        for (i = originalLevel; i > newLevel; i--) {
+                            try {
+                                sleep(1);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mWaveDrawable.setLevel(i);
+                                        mWaveDrawable.invalidateSelf();
+                                    }
+                                });
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+            }).start();
+        }
     }
 
     /**
