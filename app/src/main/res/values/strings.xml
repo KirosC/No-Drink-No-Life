@@ -31,4 +31,9 @@
     <!-- Strings for the BarChart -->
     <string name="current_week">Current Week</string>
     <string name="last_week">Last Week</string>
+
+    <!--Strings for the Dialog -->
+    <string name="dialog_dead_character">You didn\'t drink enough water.\nThis poor stick man is dead ಥ_ಥ</string>
+    <string name="respawn">Respawn</string>
+    <string name="dialog_title">Oh no！</string>
 </resources>

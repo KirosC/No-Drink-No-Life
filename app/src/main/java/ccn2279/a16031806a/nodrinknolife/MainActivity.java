@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private TextView healthValue_tv;
     private WaveDrawable mWaveDrawable;
     private SharedPreferences mSharedPreferences;
+    private DeadCharacterDialogFragment dialogFragment;
 
     // For the loop counter
     private int i;
@@ -137,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         }
     }
 
-    public void testNotification(View view) {
+    public void drinkWater(View view) {
         try {
             CalculateionUtils.increaseDrankWater(this);
         } catch (Exception e) {
