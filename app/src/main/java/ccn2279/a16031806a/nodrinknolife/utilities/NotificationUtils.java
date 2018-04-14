@@ -96,7 +96,7 @@ public class NotificationUtils {
      */
     public static void clearAllNotifications(Context context) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancelAll();
+        notificationManager.cancel(REMINDER_NOTIFICATION_ID);
     }
 
     /**
