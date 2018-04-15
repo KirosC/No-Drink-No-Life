@@ -33,7 +33,11 @@
     <string name="last_week">Last Week</string>
 
     <!--Strings for the Dialog -->
-    <string name="dialog_dead_character">You didn\'t drink enough water.\nThis poor stick man is dead ಥ_ಥ</string>
+    <string name="dialog_dead_not_enough_water">You didn\'t drink enough water.\nThis poor stick man is dead ಥ_ಥ</string>
+    <string name="dialog_dead_too_much_water">You drink too much water.\nThis poor stick man is dead ಥ_ಥ</string>
+    <string name="dialog_title">Oh No！</string>
+    <string name="dialog_title_two">Oh My Gosh！</string>
     <string name="respawn">Respawn</string>
-    <string name="dialog_title">Oh no！</string>
+    <string name="not_enough_water">Not Enough Water</string>
+    <string name="too_much_water">Too Much Water</string>
 </resources>

@@ -53,6 +53,8 @@ public class SharedPreferencesUtils {
         editor.putFloat(context.getString(R.string.character_health), (float) 100);
         editor.putBoolean(context.getString(R.string.first_week), true);
         editor.putBoolean(context.getString(R.string.is_using_weekA), true);
+        editor.putBoolean(context.getString(R.string.not_enough_water), false);
+        editor.putBoolean(context.getString(R.string.too_much_water), false);
         for (int i = MONDAY; i <= SUNDAY; i++) {
             editor.putInt(context.getString(R.string.weekA_prefix) + i, 0);
             editor.putInt(context.getString(R.string.weekB_prefix) + i, 0);

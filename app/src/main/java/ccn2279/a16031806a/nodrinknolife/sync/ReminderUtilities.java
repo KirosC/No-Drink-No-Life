@@ -13,7 +13,8 @@ import java.util.concurrent.TimeUnit;
  * Updated by Kiros Choi on 2018/04/11.
  */
 public class ReminderUtilities {
-    private static final int REMINDER_INTERVAL_MINUTES = 15;
+    // TODO: Let the user to choose the reminder interval
+    private static final int REMINDER_INTERVAL_MINUTES = 1;
     private static final long REMINDER_INTERVAL_SECONDS = (int) (TimeUnit.MINUTES.toMillis(REMINDER_INTERVAL_MINUTES));
     private static boolean sInitialized;
 

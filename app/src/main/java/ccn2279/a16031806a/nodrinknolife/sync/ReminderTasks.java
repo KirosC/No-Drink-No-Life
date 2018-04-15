@@ -2,7 +2,8 @@ package ccn2279.a16031806a.nodrinknolife.sync;
 
 import android.content.Context;
 
-import ccn2279.a16031806a.nodrinknolife.utilities.CalculateionUtils;
+import ccn2279.a16031806a.nodrinknolife.utilities.CalculationUtils;
+import ccn2279.a16031806a.nodrinknolife.utilities.SharedPreferencesUtils;
 
 /**
  * Updated by Kiros Choi on 2018/04/11.
@@ -28,7 +29,9 @@ public class ReminderTasks {
 
     private static void incrementWaterCount(Context context) {
         try {
-            CalculateionUtils.increaseDrankWater(context);
+            // TODO: Character die?
+            SharedPreferencesUtils.initSharedPreferences(context);
+            CalculationUtils.increaseDrankWater(context);
         } catch (Exception e) {
             e.printStackTrace();
         }

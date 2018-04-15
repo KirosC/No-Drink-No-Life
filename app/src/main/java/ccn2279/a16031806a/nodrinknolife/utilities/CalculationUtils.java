@@ -17,7 +17,7 @@ import static ccn2279.a16031806a.nodrinknolife.utilities.SharedPreferencesUtils.
  * Created by ownere on 7/4/2018.
  */
 
-public class CalculateionUtils {
+public class CalculationUtils {
     private static final float DECREASE_PER_SEC = (float) 0.00231481482;
     private static final float INCREASE_PER_DRINK = (float) 25;
     private static float health;
@@ -33,12 +33,20 @@ public class CalculateionUtils {
         long lastUpdate = sPreferences.getLong(context.getString(R.string.last_update_time), (long) 0);
         Calendar cal = Calendar.getInstance(TimeZone.getDefault());
         health -= (cal.getTimeInMillis() - lastUpdate) / 1000 * DECREASE_PER_SEC;
-        if (health < 0) {
-            health = 0;
+        if (health < (float) 0) {
+            health = (float) 0;
+        }
+        if (health <= (float) 0.04) {
+            makeCharacterDead(context);
+        } else if (health > (float) 199.95) {
+            makeCharacterDead(context);
         }
         lastUpdate = cal.getTimeInMillis();
         SharedPreferencesUtils.setValue(context, context.getString(R.string.character_health), health);
         SharedPreferencesUtils.setValue(context, context.getString(R.string.last_update_time), lastUpdate);
+        if (health <= (float) 0.04) {
+            makeCharacterDead(context);
+        }
     }
 
     public static void increaseDrankWater(Context context) throws Exception {
@@ -47,17 +55,44 @@ public class CalculateionUtils {
         health = sPreferences.getFloat(context.getString(R.string.character_health), 0);
         int todayDrink = sPreferences.getInt(context.getString(R.string.today_drinks), 0);
         health += INCREASE_PER_DRINK;
-        if (health > 150) {
-            health = 150;
-        }
         todayDrink++;
 
-        Toast.makeText(context, context.getString(R.string.water_chug_toast), Toast.LENGTH_SHORT).show();
+        Toast toast = new Toast(context);
+        toast.cancel();
+        toast.makeText(context, context.getString(R.string.water_chug_toast), Toast.LENGTH_SHORT).show();
         Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        v.vibrate(500);
+        v.vibrate(100);
 
+        if (health > (float) 199.95) {
+            health = 200;
+            Log.d(TAG, "health > 200");
+            makeCharacterDead(context);
+        }
         SharedPreferencesUtils.setValue(context, context.getString(R.string.character_health), health);
         SharedPreferencesUtils.setValue(context, context.getString(R.string.today_drinks), todayDrink);
+    }
+
+    /**
+     * Reset the character to respawn
+     *
+     * @param context The context of the activity.
+     */
+    public static void respawnCharacter(Context context) throws Exception {
+        long lastUpdate;
+        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
+        lastUpdate = cal.getTimeInMillis();
+        SharedPreferencesUtils.setValue(context, context.getString(R.string.character_health), (float) 100);
+        SharedPreferencesUtils.setValue(context, context.getString(R.string.last_update_time), lastUpdate);
+        SharedPreferencesUtils.setValue(context, context.getString(R.string.not_enough_water), false);
+        SharedPreferencesUtils.setValue(context, context.getString(R.string.too_much_water), false);
+    }
+
+    public static void makeCharacterDead(Context context) throws Exception {
+        if (health < (float) 0.04) {
+            SharedPreferencesUtils.setValue(context, context.getString(R.string.not_enough_water), true);
+        } else {
+            SharedPreferencesUtils.setValue(context, context.getString(R.string.too_much_water), true);
+        }
     }
 
     /**

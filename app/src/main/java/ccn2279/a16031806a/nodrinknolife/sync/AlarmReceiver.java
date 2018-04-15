@@ -7,7 +7,8 @@ import android.os.Vibrator;
 import android.util.Log;
 import android.widget.Toast;
 
-import ccn2279.a16031806a.nodrinknolife.utilities.CalculateionUtils;
+import ccn2279.a16031806a.nodrinknolife.utilities.CalculationUtils;
+import ccn2279.a16031806a.nodrinknolife.utilities.SharedPreferencesUtils;
 
 /**
  * Updated by Kiros Choi on 2018/04/11.
@@ -20,7 +21,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         String action = intent.getAction();
         if (ACTION_SAVE_DAILY_DRINKS.equals(action)) {
             try {
-                CalculateionUtils.saveDailyDrinks(context);
+                SharedPreferencesUtils.initSharedPreferences(context);
+                CalculationUtils.saveDailyDrinks(context);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -30,7 +32,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             Toast.makeText(context, "ACTION_SAVE_DAILY_DRINKS", Toast.LENGTH_SHORT).show();
         } else if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
             try {
-                CalculateionUtils.saveDailyDrinks(context);
+                CalculationUtils.saveDailyDrinks(context);
             } catch (Exception e) {
                 e.printStackTrace();
             }

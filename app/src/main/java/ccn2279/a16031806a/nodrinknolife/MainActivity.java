@@ -1,6 +1,7 @@
 package ccn2279.a16031806a.nodrinknolife;
 
 import android.app.AlarmManager;
+import android.app.DialogFragment;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -23,7 +24,7 @@ import java.util.TimeZone;
 
 import ccn2279.a16031806a.nodrinknolife.sync.AlarmReceiver;
 import ccn2279.a16031806a.nodrinknolife.sync.ReminderUtilities;
-import ccn2279.a16031806a.nodrinknolife.utilities.CalculateionUtils;
+import ccn2279.a16031806a.nodrinknolife.utilities.CalculationUtils;
 import ccn2279.a16031806a.nodrinknolife.utilities.SharedPreferencesUtils;
 
 /**
@@ -37,10 +38,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private TextView healthValue_tv;
     private WaveDrawable mWaveDrawable;
     private SharedPreferences mSharedPreferences;
-    private DeadCharacterDialogFragment dialogFragment;
 
     // For the loop counter
     private int i;
+    public boolean dialogIsShowing;
 
     // Create the Handler object (on the main thread by default)
     Handler handler = new Handler();
@@ -50,11 +51,11 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         public void run() {
             // Update character health on the main thread
             try {
-                CalculateionUtils.updateHealth(MainActivity.this);
+                CalculationUtils.updateHealth(MainActivity.this);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            // Repeat this the same runnable code block again another 90 seconds
+            // Repeat this the same runnable code block again in another 90 seconds
             handler.postDelayed(runnableCode, 90000);
         }
     };
@@ -85,18 +86,46 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
         registerAlarm();
         handler.post(runnableCode);
+
+        // Ensure the character has respawned if it died
+        boolean notEnoughWater = mSharedPreferences.getBoolean(getString(R.string.not_enough_water), false);
+        boolean tooMuchWater = mSharedPreferences.getBoolean(getString(R.string.too_much_water), false);
+        if (notEnoughWater) {
+            updateHealthUI((float) 0.0);
+            if (!dialogIsShowing) {
+                DialogFragment fragment = new NotEnoughWaterDialogFragment();
+                fragment.setCancelable(false);
+                fragment.show(getFragmentManager(), "Dialog_one");
+            }
+        }
+        if (tooMuchWater) {
+            updateHealthUI((float) 200.0);
+            if (!dialogIsShowing) {
+                DialogFragment fragment = new TooMuchWaterDialogFragment();
+                fragment.setCancelable(false);
+                fragment.show(getFragmentManager(), "Dialog_two");
+            }
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        // TODO: Back to the app, health no. is not update
         mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
         try {
-            CalculateionUtils.updateHealth(this);
+            CalculationUtils.updateHealth(this);
         } catch (Exception e) {
             e.printStackTrace();
         }
         handler.post(runnableCode);
+
+        if (mSharedPreferences.getBoolean(getString(R.string.not_enough_water), false)) {
+            onSharedPreferenceChanged(mSharedPreferences, getString(R.string.not_enough_water));
+        }
+        if (mSharedPreferences.getBoolean(getString(R.string.too_much_water), false)) {
+            onSharedPreferenceChanged(mSharedPreferences, getString(R.string.too_much_water));
+        }
     }
 
     @Override
@@ -134,13 +163,40 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(getString(R.string.character_health))) {
-            updateHealthUI(sharedPreferences.getFloat(key, (float) 0));
+            boolean notEnoughWater = mSharedPreferences.getBoolean(getString(R.string.not_enough_water), false);
+            boolean tooMuchWater = mSharedPreferences.getBoolean(getString(R.string.too_much_water), false);
+            if (!notEnoughWater && !tooMuchWater) {
+                updateHealthUI(sharedPreferences.getFloat(key, (float) 0));
+            }
+        } else if (key.equals(getString(R.string.not_enough_water))) {
+            if (sharedPreferences.getBoolean(key, true)) {
+                updateHealthUI((float) 0.0);
+                if (!dialogIsShowing) {
+                    DialogFragment fragment = new NotEnoughWaterDialogFragment();
+                    fragment.setCancelable(false);
+                    fragment.show(getFragmentManager(), "Dialog_one");
+                }
+            } else {
+                updateHealthUI(sharedPreferences.getFloat(getString(R.string.character_health), (float) 0));
+            }
+        } else if (key.equals(getString(R.string.too_much_water))) {
+            if (sharedPreferences.getBoolean(key, true)) {
+                updateHealthUI((float) 200.0);
+                if (!dialogIsShowing) {
+                    DialogFragment fragment = new TooMuchWaterDialogFragment();
+                    fragment.setCancelable(false);
+                    fragment.show(getFragmentManager(), "Dialog_two");
+                    Log.d(TAG, "Dialog shown");
+                }
+            } else {
+                updateHealthUI(sharedPreferences.getFloat(getString(R.string.character_health), (float) 0));
+            }
         }
     }
 
     public void drinkWater(View view) {
         try {
-            CalculateionUtils.increaseDrankWater(this);
+            CalculationUtils.increaseDrankWater(this);
         } catch (Exception e) {
             e.printStackTrace();
         }
