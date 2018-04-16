@@ -30,6 +30,7 @@ public class ReminderUtilities {
 
         ComponentName serviceComponent = new ComponentName(context, ccn2279.a16031806a.nodrinknolife.sync.WaterReminderJobService.class);
         JobInfo.Builder builder = new JobInfo.Builder(JOB_SCHEDULER_ID, serviceComponent);
+        builder.setPersisted(true);
 
         long REMINDER_INTERVAL_MILLISECONDS = TimeUnit.MINUTES.toMillis(minutes);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
