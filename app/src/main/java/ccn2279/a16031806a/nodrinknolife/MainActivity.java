@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private ImageView healthBar_iv;
     private TextView healthValue_tv;
     private WaveDrawable mWaveDrawable;
-    private SharedPreferences mSharedPreferences;
+    private SharedPreferences mSharedPreferences, mPreferences;
 
     // For the loop counter
     private int i;
@@ -76,11 +77,12 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         mWaveDrawable.setWaveSpeed(3);
         //      End of initialization       //
 
-        ReminderUtilities.scheduleChargingReminder(this);
+        ReminderUtilities.scheduleChargingReminder(this, 60);
         int value = SharedPreferencesUtils.initSharedPreferences(this);
         Log.d(TAG, String.valueOf(value));
 
         mSharedPreferences = getSharedPreferences(SharedPreferencesUtils.PREFERENCE_NAME, MODE_PRIVATE);
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
         updateHealthUI(mSharedPreferences.getFloat(getString(R.string.character_health), (float) 0));
 
@@ -113,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         super.onResume();
         // TODO: Back to the app, health no. is not update
         mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
+        mPreferences.registerOnSharedPreferenceChangeListener(this);
         try {
             CalculationUtils.updateHealth(this);
         } catch (Exception e) {
@@ -186,7 +189,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     DialogFragment fragment = new TooMuchWaterDialogFragment();
                     fragment.setCancelable(false);
                     fragment.show(getFragmentManager(), "Dialog_two");
-                    Log.d(TAG, "Dialog shown");
                 }
             } else {
                 updateHealthUI(sharedPreferences.getFloat(getString(R.string.character_health), (float) 0));

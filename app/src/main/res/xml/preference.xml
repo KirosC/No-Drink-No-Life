@@ -7,4 +7,12 @@
         android:entryValues="@array/values_character_array"
         android:key="pref_character"
         android:title="@string/title_character" />
+
+    <ListPreference
+        android:defaultValue="60"
+        android:dialogTitle="@string/title_notification"
+        android:entries="@array/notification_array"
+        android:entryValues="@array/values_notification"
+        android:key="pref_notification"
+        android:title="@string/title_notification" />
 </PreferenceScreen>

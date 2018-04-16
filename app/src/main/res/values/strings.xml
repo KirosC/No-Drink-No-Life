@@ -40,4 +40,5 @@
     <string name="respawn">Respawn</string>
     <string name="not_enough_water">Not Enough Water</string>
     <string name="too_much_water">Too Much Water</string>
+    <string name="title_notification">Notification Interval</string>
 </resources>
