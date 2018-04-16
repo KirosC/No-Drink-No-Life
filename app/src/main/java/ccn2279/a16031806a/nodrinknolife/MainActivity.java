@@ -284,6 +284,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
         // Repeat the alarm everyday
         AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        alarm.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
+        alarm.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 }
