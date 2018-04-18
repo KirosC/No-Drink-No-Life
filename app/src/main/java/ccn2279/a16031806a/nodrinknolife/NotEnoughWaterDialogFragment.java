@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.widget.ImageView;
 
 import ccn2279.a16031806a.nodrinknolife.utilities.CalculationUtils;
 
@@ -23,11 +24,13 @@ public class NotEnoughWaterDialogFragment extends DialogFragment {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        ((MainActivity) getActivity()).dialogIsShowing = false;
+                        ((MainActivity) getActivity()).characterIsDead = false;
+                        ((MainActivity) getActivity()).handler.post(((MainActivity) getActivity()).runnableCode);
+                        ((MainActivity) getActivity()).fAB.setImageResource(R.drawable.ic_tint);
+                        ((MainActivity) getActivity()).fAB.setScaleType(ImageView.ScaleType.CENTER);
                     }
                 });
         // Create the AlertDialog object and return it
-        ((MainActivity) getActivity()).dialogIsShowing = true;
         return builder.create();
     }
 }

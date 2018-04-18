@@ -41,4 +41,8 @@
     <string name="not_enough_water">Not Enough Water</string>
     <string name="too_much_water">Too Much Water</string>
     <string name="title_notification">Notification Interval</string>
+    <string name="status_sink">Be careful! The stickman is sinking.\nDon\'t drink too much water.</string>
+    <string name="status_rip">R.I.P.</string>
+    <string name="status_swim">Look! The stickman is swiming happily.</string>
+    <string name="status_thirsty">Look like the stickman needs some water...</string>
 </resources>

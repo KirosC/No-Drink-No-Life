@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#18ffff</color>
-    <color name="colorPrimaryDark">#00cbcc</color>
-    <color name="colorPrimaryLight">#76ffff</color>
-    <color name="colorAccent">#FF4081</color>
+    <!-- Old Color Scheme -->
+    <!--<color name="colorPrimary">#18ffff</color>-->
+    <!--<color name="colorPrimaryDark">#00cbcc</color>-->
+    <!--<color name="colorPrimaryLight">#76ffff</color>-->
+    <!--<color name="colorAccent">#FF4081</color>-->
 
+    <!-- Color Scheme -->
+    <color name="colorPrimary">#0280F0</color>
+    <color name="colorPrimaryDark">#5FACF2</color>
+    <color name="colorPrimaryLight">#9BCBF6</color>
+    <color name="colorAccent">#E9EaFF</color>
+
+    <!-- For Character Image -->
+    <color name="colorSink">#434ba0</color>
+    <color name="colorSwim">#39Def1</color>
+    <color name="colorTintSwim">#000050</color>
+    <color name="colorThirsty">#FFFFFF</color>
+
+    <!-- Common Color -->
     <color name="blue">#0099CB</color>
     <color name="red">#FF0000</color>
     <color name="white">#FFFFFF</color>

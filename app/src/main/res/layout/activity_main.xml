@@ -7,10 +7,10 @@
     tools:context="ccn2279.a16031806a.nodrinknolife.MainActivity">
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton"
+        android:id="@+id/drinkButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="64dp"
+        android:layout_marginBottom="32dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:clickable="true"
@@ -23,11 +23,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_tint" />
 
+    <!--<android.support.design.widget.FloatingActionButton-->
+    <!--android:id="@+id/respawnButton"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginBottom="32dp"-->
+    <!--android:layout_marginEnd="8dp"-->
+    <!--android:layout_marginStart="8dp"-->
+    <!--android:clickable="true"-->
+    <!--android:focusable="true"-->
+    <!--android:onClick="drinkWater"-->
+    <!--android:scaleType="center"-->
+    <!--app:fabSize="mini"-->
+    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:srcCompat="@drawable/ic_" />-->
+
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/characterImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:fitsSystemWindows="true"
+        android:scaleType="fitEnd"
         android:src="@drawable/gif_human_swim"
+        android:tintMode="add"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,7 +57,7 @@
         android:layout_width="25dp"
         android:layout_height="200dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:contentDescription="@string/health_bar"
         android:scaleType="fitXY"
@@ -51,10 +72,25 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
+        android:textColor="@color/textDarkPrimary"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/healthBar"
         app:layout_constraintStart_toStartOf="@+id/healthBar"
         app:layout_constraintTop_toBottomOf="@+id/healthBar"
         tools:text="100%" />
+
+    <TextView
+        android:id="@+id/statusText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/textDarkPrimary"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Description of character status" />
 
 </android.support.constraint.ConstraintLayout>

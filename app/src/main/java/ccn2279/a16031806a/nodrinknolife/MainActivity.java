@@ -9,6 +9,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -27,6 +29,7 @@ import ccn2279.a16031806a.nodrinknolife.sync.AlarmReceiver;
 import ccn2279.a16031806a.nodrinknolife.sync.ReminderUtilities;
 import ccn2279.a16031806a.nodrinknolife.utilities.CalculationUtils;
 import ccn2279.a16031806a.nodrinknolife.utilities.SharedPreferencesUtils;
+import pl.droidsonroids.gif.GifImageView;
 
 /**
  * Updated by Kiros Choi on 2018/04/11.
@@ -36,18 +39,12 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     public static final String TAG = "Debug_NoDrinkNoLife";
 
     private ImageView healthBar_iv;
-    private TextView healthValue_tv;
+    public boolean characterIsDead;
     private WaveDrawable mWaveDrawable;
     private SharedPreferences mSharedPreferences, mPreferences;
-
-    // For the loop counter
-    private int i;
-    public boolean dialogIsShowing;
-
-    // Create the Handler object (on the main thread by default)
-    Handler handler = new Handler();
+    FloatingActionButton fAB;
     // Define the code block to be executed
-    private Runnable runnableCode = new Runnable() {
+    Runnable runnableCode = new Runnable() {
         @Override
         public void run() {
             // Update character health on the main thread
@@ -61,6 +58,15 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         }
     };
 
+    // For the loop counter
+    private int i;
+    private TextView healthValue_tv, characterStatus_tv;
+    private GifImageView characterGif; // new
+
+    // Create the Handler object (on the main thread by default)
+    Handler handler = new Handler();
+    private int characterStatus;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +75,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         //      Initialize View object      //
         healthBar_iv = findViewById(R.id.healthBar);
         healthValue_tv = findViewById(R.id.healthValue);
+        characterStatus_tv = findViewById(R.id.statusText);
+        characterGif = findViewById(R.id.characterImage);
+        fAB = findViewById(R.id.drinkButton);
 
         mWaveDrawable = new WaveDrawable(this, R.drawable.health_bar);
         healthBar_iv.setImageDrawable(mWaveDrawable);
@@ -88,26 +97,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
         registerAlarm();
         handler.post(runnableCode);
-
-        // Ensure the character has respawned if it died
-        boolean notEnoughWater = mSharedPreferences.getBoolean(getString(R.string.not_enough_water), false);
-        boolean tooMuchWater = mSharedPreferences.getBoolean(getString(R.string.too_much_water), false);
-        if (notEnoughWater) {
-            updateHealthUI((float) 0.0);
-            if (!dialogIsShowing) {
-                DialogFragment fragment = new NotEnoughWaterDialogFragment();
-                fragment.setCancelable(false);
-                fragment.show(getFragmentManager(), "Dialog_one");
-            }
-        }
-        if (tooMuchWater) {
-            updateHealthUI((float) 200.0);
-            if (!dialogIsShowing) {
-                DialogFragment fragment = new TooMuchWaterDialogFragment();
-                fragment.setCancelable(false);
-                fragment.show(getFragmentManager(), "Dialog_two");
-            }
-        }
     }
 
     @Override
@@ -171,25 +160,38 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             if (!notEnoughWater && !tooMuchWater) {
                 updateHealthUI(sharedPreferences.getFloat(key, (float) 0));
             }
+            updateCharacterImage(sharedPreferences.getFloat(key, (float) 0));
         } else if (key.equals(getString(R.string.not_enough_water))) {
             if (sharedPreferences.getBoolean(key, true)) {
                 updateHealthUI((float) 0.0);
-                if (!dialogIsShowing) {
-                    DialogFragment fragment = new NotEnoughWaterDialogFragment();
-                    fragment.setCancelable(false);
-                    fragment.show(getFragmentManager(), "Dialog_one");
-                }
+
+                characterGif.setImageResource(R.drawable.gif_human_death);
+                characterGif.setBackgroundColor(getResources().getColor(R.color.colorThirsty));
+                characterGif.setImageTintList(ContextCompat.getColorStateList(MainActivity.this, R.color.black));
+                characterGif.refreshDrawableState();
+                characterStatus_tv.setText(getString(R.string.status_rip));
+
+                fAB.setImageResource(R.drawable.ic_respawn);
+                fAB.setScaleType(ImageView.ScaleType.CENTER);
+                characterIsDead = true;
+                handler.removeCallbacksAndMessages(null);
             } else {
                 updateHealthUI(sharedPreferences.getFloat(getString(R.string.character_health), (float) 0));
             }
         } else if (key.equals(getString(R.string.too_much_water))) {
             if (sharedPreferences.getBoolean(key, true)) {
                 updateHealthUI((float) 200.0);
-                if (!dialogIsShowing) {
-                    DialogFragment fragment = new TooMuchWaterDialogFragment();
-                    fragment.setCancelable(false);
-                    fragment.show(getFragmentManager(), "Dialog_two");
-                }
+
+                characterGif.setImageResource(R.drawable.gif_human_death);
+                characterGif.setBackgroundColor(getResources().getColor(R.color.colorThirsty));
+                characterGif.setImageTintList(ContextCompat.getColorStateList(MainActivity.this, R.color.black));
+                characterGif.refreshDrawableState();
+                characterStatus_tv.setText(getString(R.string.status_rip));
+
+                fAB.setImageResource(R.drawable.ic_respawn);
+                fAB.setScaleType(ImageView.ScaleType.CENTER);
+                characterIsDead = true;
+                handler.removeCallbacksAndMessages(null);
             } else {
                 updateHealthUI(sharedPreferences.getFloat(getString(R.string.character_health), (float) 0));
             }
@@ -197,11 +199,27 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     }
 
     public void drinkWater(View view) {
-        try {
-            CalculationUtils.increaseDrankWater(this);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (!characterIsDead) {
+            try {
+                CalculationUtils.increaseDrankWater(this);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            if (mSharedPreferences.getBoolean(getString(R.string.not_enough_water), false)) {
+                DialogFragment fragment = new NotEnoughWaterDialogFragment();
+                fragment.setCancelable(false);
+                fragment.show(getFragmentManager(), "Dialog_not_enough_water");
+            } else {
+                DialogFragment fragment = new TooMuchWaterDialogFragment();
+                fragment.setCancelable(false);
+                fragment.show(getFragmentManager(), "Dialog_too_much_water");
+            }
         }
+    }
+
+    public void respawn(View view) {
+
     }
 
     /**
@@ -267,7 +285,46 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     }
 
     /**
-     * Set an alarm on every midnight
+     * Update different character image with corresponding health.
+     *
+     * @param health The current character health value.
+     */
+    private void updateCharacterImage(float health) {
+        if (health >= 150 && health < 199.95) {
+            if (characterStatus == 1) {
+                return;
+            }
+            characterGif.setImageResource(R.drawable.gif_human_sink);
+            characterGif.setBackgroundColor(getResources().getColor(R.color.colorSink));
+            characterGif.setImageTintList(ContextCompat.getColorStateList(MainActivity.this, R.color.black));
+            characterGif.refreshDrawableState();
+            characterStatus_tv.setText(getString(R.string.status_sink));
+            characterStatus = 1;
+        } else if (health > 50 && health < 150) {
+            if (characterStatus == 2) {
+                return;
+            }
+            characterGif.setImageResource(R.drawable.gif_human_swim);
+            characterGif.setBackgroundColor(getResources().getColor(R.color.colorSwim));
+            characterGif.setImageTintList(ContextCompat.getColorStateList(MainActivity.this, R.color.colorTintSwim));
+            characterGif.refreshDrawableState();
+            characterStatus_tv.setText(getString(R.string.status_swim));
+            characterStatus = 2;
+        } else if (health > 0.04 && health <= 50) {
+            if (characterStatus == 3) {
+                return;
+            }
+            characterGif.setImageResource(R.drawable.gif_human_thirsty);
+            characterGif.setBackgroundColor(getResources().getColor(R.color.colorThirsty));
+            characterGif.setImageTintList(ContextCompat.getColorStateList(MainActivity.this, R.color.black));
+            characterGif.refreshDrawableState();
+            characterStatus_tv.setText(getString(R.string.status_thirsty));
+            characterStatus = 3;
+        }
+    }
+
+    /**
+     * Set an schedule alarm on every midnight.
      */
     public void registerAlarm() {
         // Set a pending intent to be executed

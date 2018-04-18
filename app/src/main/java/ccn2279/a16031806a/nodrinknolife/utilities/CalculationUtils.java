@@ -11,7 +11,9 @@ import java.util.TimeZone;
 
 import ccn2279.a16031806a.nodrinknolife.R;
 
-import static ccn2279.a16031806a.nodrinknolife.utilities.SharedPreferencesUtils.*;
+import static ccn2279.a16031806a.nodrinknolife.utilities.SharedPreferencesUtils.MONDAY;
+import static ccn2279.a16031806a.nodrinknolife.utilities.SharedPreferencesUtils.PREFERENCE_NAME;
+import static ccn2279.a16031806a.nodrinknolife.utilities.SharedPreferencesUtils.SUNDAY;
 
 /**
  * Created by ownere on 7/4/2018.
@@ -63,9 +65,9 @@ public class CalculationUtils {
         Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         v.vibrate(100);
 
+        Log.d(TAG, "Health: " + health);
         if (health > (float) 199.95) {
             health = 200;
-            Log.d(TAG, "health > 200");
             makeCharacterDead(context);
         }
         SharedPreferencesUtils.setValue(context, context.getString(R.string.character_health), health);
