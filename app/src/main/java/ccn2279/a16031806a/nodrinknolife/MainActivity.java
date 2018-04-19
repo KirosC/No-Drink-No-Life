@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,6 +31,9 @@ import ccn2279.a16031806a.nodrinknolife.sync.ReminderUtilities;
 import ccn2279.a16031806a.nodrinknolife.utilities.CalculationUtils;
 import ccn2279.a16031806a.nodrinknolife.utilities.SharedPreferencesUtils;
 import pl.droidsonroids.gif.GifImageView;
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
+import uk.co.samuelwall.materialtaptargetprompt.extras.backgrounds.RectanglePromptBackground;
+import uk.co.samuelwall.materialtaptargetprompt.extras.focals.RectanglePromptFocal;
 
 /**
  * Updated by Kiros Choi on 2018/04/11.
@@ -39,10 +43,14 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     public static final String TAG = "Debug_NoDrinkNoLife";
 
     private ImageView healthBar_iv;
-    public boolean characterIsDead;
     private WaveDrawable mWaveDrawable;
     private SharedPreferences mSharedPreferences, mPreferences;
+    public boolean characterIsDead;
+    private FrameLayout healthFrame;
+    private TextView healthValue_tv, characterStatus_tv;
+    private GifImageView characterGif;
     FloatingActionButton fAB;
+
     // Define the code block to be executed
     Runnable runnableCode = new Runnable() {
         @Override
@@ -60,8 +68,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
     // For the loop counter
     private int i;
-    private TextView healthValue_tv, characterStatus_tv;
-    private GifImageView characterGif; // new
+    private Menu menu;
 
     // Create the Handler object (on the main thread by default)
     Handler handler = new Handler();
@@ -75,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         //      Initialize View object      //
         healthBar_iv = findViewById(R.id.healthBar);
         healthValue_tv = findViewById(R.id.healthValue);
+        healthFrame = findViewById(R.id.healthFrame);
         characterStatus_tv = findViewById(R.id.statusText);
         characterGif = findViewById(R.id.characterImage);
         fAB = findViewById(R.id.drinkButton);
@@ -87,8 +95,55 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         //      End of initialization       //
 
         ReminderUtilities.scheduleChargingReminder(this, 60);
-        int value = SharedPreferencesUtils.initSharedPreferences(this);
-        Log.d(TAG, String.valueOf(value));
+        int initializationValue = SharedPreferencesUtils.initSharedPreferences(this);
+        Log.d(TAG, String.valueOf(initializationValue));
+
+        if (initializationValue == 1) {
+            new MaterialTapTargetPrompt.Builder(MainActivity.this)
+                    .setTarget(fAB)
+                    .setBackgroundColour(getResources().getColor(R.color.colorSink))
+                    .setPrimaryText(R.string.intro_title_drink)
+                    .setSecondaryText(R.string.intro_body_drink)
+                    .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener() {
+                        @Override
+                        public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state) {
+                            if (state == MaterialTapTargetPrompt.STATE_DISMISSED) {
+                                new MaterialTapTargetPrompt.Builder(MainActivity.this)
+                                        .setTarget(healthFrame)
+                                        .setBackgroundColour(getResources().getColor(R.color.colorSink))
+                                        .setPromptBackground(new RectanglePromptBackground())
+                                        .setPromptFocal(new RectanglePromptFocal())
+                                        .setPrimaryText(R.string.intro_title_health)
+                                        .setSecondaryText(R.string.intro_body_health)
+                                        .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener() {
+                                            @Override
+                                            public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state) {
+                                                if (state == MaterialTapTargetPrompt.STATE_DISMISSED) {
+                                                    final android.support.v7.widget.Toolbar toolbar = findViewById(android.support.v7.appcompat.R.id.action_bar);
+                                                    final View child = toolbar.getChildAt(1);
+                                                    final android.support.v7.widget.ActionMenuView actionMenuView = (android.support.v7.widget.ActionMenuView) child;
+                                                    final MaterialTapTargetPrompt.Builder builder = new MaterialTapTargetPrompt.Builder(MainActivity.this)
+                                                            .setPrimaryText(R.string.intro_title_stat)
+                                                            .setSecondaryText(R.string.intro_body_stat)
+                                                            .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener() {
+                                                                @Override
+                                                                public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state) {
+                                                                    if (state == MaterialTapTargetPrompt.STATE_FOCAL_PRESSED) {
+                                                                        // User has pressed the prompt target
+                                                                    }
+                                                                }
+                                                            });
+                                                    builder.setTarget(actionMenuView.getChildAt(actionMenuView.getChildCount() - 2));
+                                                    builder.show();
+                                                }
+                                            }
+                                        })
+                                        .show();
+                            }
+                        }
+                    })
+                    .show();
+        }
 
         mSharedPreferences = getSharedPreferences(SharedPreferencesUtils.PREFERENCE_NAME, MODE_PRIVATE);
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -136,6 +191,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
+        this.menu = menu;
         return true;
     }
 
@@ -147,6 +203,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             startActivity(intent);
         } else if (id == R.id.stat) {
             Intent intent = new Intent(this, StatActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.about) {
+            Intent intent = new Intent(this, AboutActivity.class);
             startActivity(intent);
         }
         return true;
@@ -170,6 +229,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 characterGif.setImageTintList(ContextCompat.getColorStateList(MainActivity.this, R.color.black));
                 characterGif.refreshDrawableState();
                 characterStatus_tv.setText(getString(R.string.status_rip));
+                characterStatus_tv.setTextColor(getResources().getColor(R.color.textDarkPrimary));
+                healthValue_tv.setTextColor(getResources().getColor(R.color.textDarkPrimary));
 
                 fAB.setImageResource(R.drawable.ic_respawn);
                 fAB.setScaleType(ImageView.ScaleType.CENTER);
@@ -187,6 +248,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 characterGif.setImageTintList(ContextCompat.getColorStateList(MainActivity.this, R.color.black));
                 characterGif.refreshDrawableState();
                 characterStatus_tv.setText(getString(R.string.status_rip));
+                characterStatus_tv.setTextColor(getResources().getColor(R.color.textDarkPrimary));
+                healthValue_tv.setTextColor(getResources().getColor(R.color.textDarkPrimary));
 
                 fAB.setImageResource(R.drawable.ic_respawn);
                 fAB.setScaleType(ImageView.ScaleType.CENTER);
@@ -198,7 +261,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         }
     }
 
-    public void drinkWater(View view) {
+    public void drinkWaterOrRespawn(View view) {
         if (!characterIsDead) {
             try {
                 CalculationUtils.increaseDrankWater(this);
@@ -207,10 +270,12 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             }
         } else {
             if (mSharedPreferences.getBoolean(getString(R.string.not_enough_water), false)) {
+                fAB.setClickable(false);
                 DialogFragment fragment = new NotEnoughWaterDialogFragment();
                 fragment.setCancelable(false);
                 fragment.show(getFragmentManager(), "Dialog_not_enough_water");
             } else {
+                fAB.setClickable(false);
                 DialogFragment fragment = new TooMuchWaterDialogFragment();
                 fragment.setCancelable(false);
                 fragment.show(getFragmentManager(), "Dialog_too_much_water");
@@ -231,7 +296,12 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         healthValue_tv.setText(String.format("%.1f%%", health));
         // Min: 2570; Max: 9990
         final int newLevel = (int) (2570 + (7420 * health / 100));
-        final int originalLevel = mWaveDrawable.getLevel();
+        int temp = mWaveDrawable.getLevel();
+        if (temp > (float) 9990) {
+            temp = 9990;
+        }
+        final int originalLevel = temp;
+
         int difference = originalLevel - newLevel;
         if (difference < 0) {
             difference = -difference;
@@ -299,6 +369,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             characterGif.setImageTintList(ContextCompat.getColorStateList(MainActivity.this, R.color.black));
             characterGif.refreshDrawableState();
             characterStatus_tv.setText(getString(R.string.status_sink));
+            characterStatus_tv.setTextColor(getResources().getColor(R.color.textLightPrimary));
+            healthValue_tv.setTextColor(getResources().getColor(R.color.textLightPrimary));
             characterStatus = 1;
         } else if (health > 50 && health < 150) {
             if (characterStatus == 2) {
@@ -309,6 +381,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             characterGif.setImageTintList(ContextCompat.getColorStateList(MainActivity.this, R.color.colorTintSwim));
             characterGif.refreshDrawableState();
             characterStatus_tv.setText(getString(R.string.status_swim));
+            characterStatus_tv.setTextColor(getResources().getColor(R.color.textDarkPrimary));
+            healthValue_tv.setTextColor(getResources().getColor(R.color.textDarkPrimary));
             characterStatus = 2;
         } else if (health > 0.04 && health <= 50) {
             if (characterStatus == 3) {
@@ -319,6 +393,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             characterGif.setImageTintList(ContextCompat.getColorStateList(MainActivity.this, R.color.black));
             characterGif.refreshDrawableState();
             characterStatus_tv.setText(getString(R.string.status_thirsty));
+            characterStatus_tv.setTextColor(getResources().getColor(R.color.textDarkPrimary));
+            healthValue_tv.setTextColor(getResources().getColor(R.color.textDarkPrimary));
             characterStatus = 3;
         }
     }

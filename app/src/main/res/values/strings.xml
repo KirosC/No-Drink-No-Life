@@ -45,4 +45,17 @@
     <string name="status_rip">R.I.P.</string>
     <string name="status_swim">Look! The stickman is swiming happily.</string>
     <string name="status_thirsty">Look like the stickman needs some water...</string>
+
+    <!-- Strings for AboutActivity -->
+    <string name="group_list">16031806A*\t -   Choi Ki Fung\n16183875A\t\t -   Cheung Cheuk Yiu\n16036709A\t\t -   Li Wang Hon\n16060027A\t\t -   So Hon Sam</string>
+    <string name="group_member">Group Member</string>
+    <string name="about">About</string>
+
+    <!-- Strings for feature discovery -->
+    <string name="intro_title_drink">Drink water</string>
+    <string name="intro_body_drink">Tap the button to increase your number of drink</string>
+    <string name="intro_title_health">Health Bar</string>
+    <string name="intro_body_health">This is the health of the stickman\nDon\'t drink too much or too little water!</string>
+    <string name="intro_title_stat">Show statistics</string>
+    <string name="intro_body_stat">Check out how much water you drank on each day</string>
 </resources>

@@ -26,8 +26,8 @@ public class CalculationUtils {
 
     public static final String TAG = "Debug_NoDrinkNoLife";
 
-
     private static SharedPreferences sPreferences;
+    private static Toast toast;
 
     public static void updateHealth(Context context) throws Exception {
         sPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
@@ -59,11 +59,13 @@ public class CalculationUtils {
         health += INCREASE_PER_DRINK;
         todayDrink++;
 
-        Toast toast = new Toast(context);
-        toast.cancel();
-        toast.makeText(context, context.getString(R.string.water_chug_toast), Toast.LENGTH_SHORT).show();
+        if (toast != null) {
+            toast.cancel();
+        }
+        toast = Toast.makeText(context, context.getString(R.string.water_chug_toast), Toast.LENGTH_SHORT);
+        toast.show();
         Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        v.vibrate(100);
+        v.vibrate(50);
 
         Log.d(TAG, "Health: " + health);
         if (health > (float) 199.95) {

@@ -37,12 +37,11 @@
         <service
             android:name=".sync.WaterReminderJobService"
             android:exported="false"
-            android:permission="android.permission.BIND_JOB_SERVICE">
-        </service>
+            android:permission="android.permission.BIND_JOB_SERVICE"></service>
 
         <activity
             android:name=".StatActivity"
-            android:label="@string/title_activity_statistics"></activity>
+            android:label="@string/title_activity_statistics" />
 
         <receiver
             android:name=".sync.AlarmReceiver"
@@ -51,6 +50,8 @@
                 <action android:name=".sync.AlarmReceiver.ACTION_SAVE_DAILY_DRINKS" />
             </intent-filter>
         </receiver>
+
+        <activity android:name=".AboutActivity"></activity>
     </application>
 
 </manifest>

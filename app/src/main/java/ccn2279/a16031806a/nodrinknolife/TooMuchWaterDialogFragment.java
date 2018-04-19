@@ -28,6 +28,7 @@ public class TooMuchWaterDialogFragment extends DialogFragment {
                         ((MainActivity) getActivity()).handler.post(((MainActivity) getActivity()).runnableCode);
                         ((MainActivity) getActivity()).fAB.setImageResource(R.drawable.ic_tint);
                         ((MainActivity) getActivity()).fAB.setScaleType(ImageView.ScaleType.CENTER);
+                        ((MainActivity) getActivity()).fAB.setClickable(true);
                     }
                 });
         // Create the AlertDialog object and return it
