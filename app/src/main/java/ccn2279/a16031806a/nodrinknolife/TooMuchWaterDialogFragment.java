@@ -9,6 +9,9 @@ import android.widget.ImageView;
 
 import ccn2279.a16031806a.nodrinknolife.utilities.CalculationUtils;
 
+/**
+ * Dialog class to show when user drinks too much water.
+ */
 public class TooMuchWaterDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

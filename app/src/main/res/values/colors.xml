@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--Old Color Scheme -->
-    <!--<color name="colorPrimary">#18ffff</color>-->
-    <!--<color name="colorPrimaryDark">#00cbcc</color>-->
-    <!--<color name="colorPrimaryLight">#76ffff</color>-->
-
     <!-- Color Scheme -->
     <color name="colorPrimary">#0280F0</color>
     <color name="colorPrimaryDark">#5FACF2</color>

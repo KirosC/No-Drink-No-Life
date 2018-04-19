@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
     // For the loop counter
     private int i;
-    private Menu menu;
 
     // Create the Handler object (on the main thread by default)
     Handler handler = new Handler();
@@ -98,7 +97,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         int initializationValue = SharedPreferencesUtils.initSharedPreferences(this);
         Log.d(TAG, String.valueOf(initializationValue));
 
+        // Start the feature discovery if it is the first time use
         if (initializationValue == 1) {
+            // For the Drink Button
             new MaterialTapTargetPrompt.Builder(MainActivity.this)
                     .setTarget(fAB)
                     .setBackgroundColour(getResources().getColor(R.color.colorSink))
@@ -107,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener() {
                         @Override
                         public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state) {
+                            // For the Health UI
                             if (state == MaterialTapTargetPrompt.STATE_DISMISSED) {
                                 new MaterialTapTargetPrompt.Builder(MainActivity.this)
                                         .setTarget(healthFrame)
@@ -118,21 +120,14 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                                         .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener() {
                                             @Override
                                             public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state) {
+                                                // For the Stat. Button
                                                 if (state == MaterialTapTargetPrompt.STATE_DISMISSED) {
                                                     final android.support.v7.widget.Toolbar toolbar = findViewById(android.support.v7.appcompat.R.id.action_bar);
                                                     final View child = toolbar.getChildAt(1);
                                                     final android.support.v7.widget.ActionMenuView actionMenuView = (android.support.v7.widget.ActionMenuView) child;
                                                     final MaterialTapTargetPrompt.Builder builder = new MaterialTapTargetPrompt.Builder(MainActivity.this)
                                                             .setPrimaryText(R.string.intro_title_stat)
-                                                            .setSecondaryText(R.string.intro_body_stat)
-                                                            .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener() {
-                                                                @Override
-                                                                public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state) {
-                                                                    if (state == MaterialTapTargetPrompt.STATE_FOCAL_PRESSED) {
-                                                                        // User has pressed the prompt target
-                                                                    }
-                                                                }
-                                                            });
+                                                            .setSecondaryText(R.string.intro_body_stat);
                                                     builder.setTarget(actionMenuView.getChildAt(actionMenuView.getChildCount() - 2));
                                                     builder.show();
                                                 }
@@ -149,17 +144,21 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
         updateHealthUI(mSharedPreferences.getFloat(getString(R.string.character_health), (float) 0));
+        updateCharacterImage(mSharedPreferences.getFloat(getString(R.string.character_health), (float) 0));
 
+        // Schedule task
         registerAlarm();
+        // Start update Health UI continuously
         handler.post(runnableCode);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // TODO: Back to the app, health no. is not update
         mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
         mPreferences.registerOnSharedPreferenceChangeListener(this);
+
+        // Calculate the character's health since last leave
         try {
             CalculationUtils.updateHealth(this);
         } catch (Exception e) {
@@ -167,6 +166,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         }
         handler.post(runnableCode);
 
+        // Check if the character is dead
         if (mSharedPreferences.getBoolean(getString(R.string.not_enough_water), false)) {
             onSharedPreferenceChanged(mSharedPreferences, getString(R.string.not_enough_water));
         }
@@ -179,11 +179,13 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     protected void onPause() {
         super.onPause();
         mSharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+        mPreferences.unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        // Stop update Health UI continuously
         handler.removeCallbacksAndMessages(null);
     }
 
@@ -191,7 +193,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
-        this.menu = menu;
         return true;
     }
 
@@ -221,6 +222,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             }
             updateCharacterImage(sharedPreferences.getFloat(key, (float) 0));
         } else if (key.equals(getString(R.string.not_enough_water))) {
+            // Change the character GIF and Drink Button
             if (sharedPreferences.getBoolean(key, true)) {
                 updateHealthUI((float) 0.0);
 
@@ -240,6 +242,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 updateHealthUI(sharedPreferences.getFloat(getString(R.string.character_health), (float) 0));
             }
         } else if (key.equals(getString(R.string.too_much_water))) {
+            // Change the character GIF and Drink Button
             if (sharedPreferences.getBoolean(key, true)) {
                 updateHealthUI((float) 200.0);
 
@@ -270,6 +273,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             }
         } else {
             if (mSharedPreferences.getBoolean(getString(R.string.not_enough_water), false)) {
+                // Disable the Button and show the respawn dialog if the character is dead
                 fAB.setClickable(false);
                 DialogFragment fragment = new NotEnoughWaterDialogFragment();
                 fragment.setCancelable(false);

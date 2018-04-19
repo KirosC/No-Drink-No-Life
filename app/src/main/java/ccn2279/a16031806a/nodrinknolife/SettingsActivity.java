@@ -41,6 +41,7 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals("pref_notification")) {
+            // Reschedule notification interval
             ReminderUtilities.scheduleChargingReminder(this, Long.parseLong(sharedPreferences.getString("pref_notification", "0")));
         }
     }

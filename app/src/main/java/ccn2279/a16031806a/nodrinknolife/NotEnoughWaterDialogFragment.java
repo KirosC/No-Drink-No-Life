@@ -9,6 +9,9 @@ import android.widget.ImageView;
 
 import ccn2279.a16031806a.nodrinknolife.utilities.CalculationUtils;
 
+/**
+ * Dialog to show when user drinks not enough water.
+ */
 public class NotEnoughWaterDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

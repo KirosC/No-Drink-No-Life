@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setting">設定</string>
+    <string name="title_character">角色選擇</string>
+    <string name="water_chug_toast">咕嚕咕嚕</string>
+    <string name="status_swim">看！火柴人在暢泳~</string>
+    <string name="status_thirsty">看來火柴人需要一點水...</string>
+    <string name="about">關於</string>
+    <string name="intro_body_health">這是火柴人的生命值</string>
+    <string name="intro_title_stat">顯示統計</string>
+    <string name="intro_body_stat">查看您每天的喝水量</string>
+    <string name="intro_title_health">生命值</string>
+    <string name="intro_body_drink">按下按鍵來增加您的喝水次數</string>
+    <string name="intro_title_drink">喝水</string>
+    <string name="group_member">組員</string>
+    <string name="status_sink">小心！火柴人正被水淹沒！不要喝太多水</string>
+    <string name="title_notification">通知間隔</string>
+    <string name="dialog_dead_too_much_water">您喝太多水了... 火柴人死了... ಥ_ಥ</string>
+    <string name="dialog_dead_not_enough_water">您沒有喝足夠的水...可憐的火柴人死了 ಥ_ಥ</string>
+    <string name="last_week">上週</string>
+    <string name="current_week">今週</string>
+    <string name="ignore_reminder">不用謝</string>
+    <string name="charging_reminder_notification_body">喝吧！</string>
+    <string name="charging_reminder_notification_title">水在哪？</string>
+    <string name="respawn">砍掉重練</string>
+    <string name="accept_reminder">喝了！</string>
+    <string name="title_activity_settings">設定</string>
+    <string name="title_activity_statistics">統計</string>
+</resources>
