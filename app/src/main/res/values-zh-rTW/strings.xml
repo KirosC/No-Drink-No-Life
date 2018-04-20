@@ -19,7 +19,7 @@
     <string name="dialog_dead_not_enough_water">您沒有喝足夠的水...可憐的火柴人死了 ಥ_ಥ</string>
     <string name="last_week">上週</string>
     <string name="current_week">今週</string>
-    <string name="ignore_reminder">不用謝</string>
+    <string name="ignore_reminder">要返工，不了</string>
     <string name="charging_reminder_notification_body">喝吧！</string>
     <string name="charging_reminder_notification_title">水在哪？</string>
     <string name="respawn">砍掉重練</string>
