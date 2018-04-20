@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Array String for Preferences-->
+    <string-array name="name_character_array">
+        <item>火柴人</item>
+    </string-array>
+    <string-array name="notification_array">
+        <item>關閉</item>
+        <item>30 分鐘</item>
+        <item>1 小時</item>
+        <item>2 小時</item>
+        <item>3 小時</item>
+        <item>4 小時</item>
+        <item>5 小時</item>
+        <item>6 小時</item>
+    </string-array>
+
+    <!-- Array String for the BarChart -->
+    <string-array name="day_array">
+        <item>週一</item>
+        <item>週二</item>
+        <item>週三</item>
+        <item>週四</item>
+        <item>週五</item>
+        <item>週六</item>
+        <item>週日</item>
+    </string-array>
+</resources>

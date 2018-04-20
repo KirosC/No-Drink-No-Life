@@ -30,7 +30,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-
+        <activity
+            android:name=".StatActivity"
+            android:label="@string/title_activity_statistics"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".AboutActivity"
+            android:label="@string/about"
+            android:parentActivityName=".MainActivity" />
         <service
             android:name=".sync.WaterReminderIntentService"
             android:exported="false" />
@@ -38,11 +45,6 @@
             android:name=".sync.WaterReminderJobService"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE"></service>
-
-        <activity
-            android:name=".StatActivity"
-            android:label="@string/title_activity_statistics" />
-
         <receiver
             android:name=".sync.AlarmReceiver"
             android:enabled="true">
@@ -50,8 +52,6 @@
                 <action android:name=".sync.AlarmReceiver.ACTION_SAVE_DAILY_DRINKS" />
             </intent-filter>
         </receiver>
-
-        <activity android:name=".AboutActivity"></activity>
     </application>
 
 </manifest>

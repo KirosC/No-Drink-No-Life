@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -213,13 +212,5 @@ public class StatActivity extends AppCompatActivity {
 
             barChartB.invalidate();
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-        }
-        return true;
     }
 }

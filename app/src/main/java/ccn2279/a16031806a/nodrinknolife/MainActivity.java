@@ -6,11 +6,14 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -50,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private TextView healthValue_tv, characterStatus_tv;
     private GifImageView characterGif;
     FloatingActionButton fAB;
+
+    private Menu menu;
 
     // Define the code block to be executed
     Runnable runnableCode = new Runnable() {
@@ -122,12 +127,29 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                                             public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state) {
                                                 // For the Stat. Button
                                                 if (state == MaterialTapTargetPrompt.STATE_DISMISSED) {
+                                                    // Set the Stat. icon to black temporarily
+                                                    Drawable drawable = menu.findItem(R.id.stat).getIcon();
+                                                    drawable = DrawableCompat.wrap(drawable);
+                                                    DrawableCompat.setTint(drawable, ContextCompat.getColor(MainActivity.this, R.color.black));
+                                                    menu.findItem(R.id.stat).setIcon(drawable);
                                                     final android.support.v7.widget.Toolbar toolbar = findViewById(android.support.v7.appcompat.R.id.action_bar);
                                                     final View child = toolbar.getChildAt(1);
                                                     final android.support.v7.widget.ActionMenuView actionMenuView = (android.support.v7.widget.ActionMenuView) child;
                                                     final MaterialTapTargetPrompt.Builder builder = new MaterialTapTargetPrompt.Builder(MainActivity.this)
                                                             .setPrimaryText(R.string.intro_title_stat)
+                                                            .setFocalColour(getResources().getColor(R.color.white))
                                                             .setSecondaryText(R.string.intro_body_stat);
+                                                    builder.setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener() {
+                                                        @Override
+                                                        public void onPromptStateChanged(@NonNull MaterialTapTargetPrompt prompt, int state) {
+                                                            if (state == MaterialTapTargetPrompt.STATE_DISMISSED) {
+                                                                Drawable drawable = menu.findItem(R.id.stat).getIcon();
+                                                                drawable = DrawableCompat.wrap(drawable);
+                                                                DrawableCompat.setTint(drawable, ContextCompat.getColor(MainActivity.this, R.color.white));
+                                                                menu.findItem(R.id.stat).setIcon(drawable);
+                                                            }
+                                                        }
+                                                    });
                                                     builder.setTarget(actionMenuView.getChildAt(actionMenuView.getChildCount() - 2));
                                                     builder.show();
                                                 }
@@ -193,6 +215,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
+
+        this.menu = menu;
         return true;
     }
 
