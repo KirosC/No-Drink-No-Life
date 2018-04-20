@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                         @Override
                         public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state) {
                             // For the Health UI
-                            if (state == MaterialTapTargetPrompt.STATE_DISMISSED) {
+                            if (state == MaterialTapTargetPrompt.STATE_DISMISSED || state == MaterialTapTargetPrompt.STATE_FINISHED) {
                                 new MaterialTapTargetPrompt.Builder(MainActivity.this)
                                         .setTarget(healthFrame)
                                         .setBackgroundColour(getResources().getColor(R.color.colorSink))
@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                                             @Override
                                             public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state) {
                                                 // For the Stat. Button
-                                                if (state == MaterialTapTargetPrompt.STATE_DISMISSED) {
+                                                if (state == MaterialTapTargetPrompt.STATE_DISMISSED || state == MaterialTapTargetPrompt.STATE_FINISHED) {
                                                     // Set the Stat. icon to black temporarily
                                                     Drawable drawable = menu.findItem(R.id.stat).getIcon();
                                                     drawable = DrawableCompat.wrap(drawable);
@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                                                     builder.setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener() {
                                                         @Override
                                                         public void onPromptStateChanged(@NonNull MaterialTapTargetPrompt prompt, int state) {
-                                                            if (state == MaterialTapTargetPrompt.STATE_DISMISSED) {
+                                                            if (state == MaterialTapTargetPrompt.STATE_DISMISSED || state == MaterialTapTargetPrompt.STATE_FINISHED) {
                                                                 Drawable drawable = menu.findItem(R.id.stat).getIcon();
                                                                 drawable = DrawableCompat.wrap(drawable);
                                                                 DrawableCompat.setTint(drawable, ContextCompat.getColor(MainActivity.this, R.color.white));
